@@ -2,4 +2,7 @@
 FROM ghcr.io/ublue-os/fedora-kinoite:43
 
 # Install test dialog package
-RUN rpm-ostree install dialog
+RUN rpm-ostree install \
+    vim \
+    git \
+    htop
