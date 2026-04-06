@@ -1,5 +1,5 @@
 # F43 Universal Blue Image
-FROM ghcr.io/ublue-os/fedora-kinoite:43
+FROM ghcr.io/ublue-os/kinoite-main:latest
 
 # Install test dialog package
 RUN rpm-ostree install \
