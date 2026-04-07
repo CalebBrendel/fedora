@@ -1,7 +1,7 @@
 # F43 Universal Blue Image
 FROM ghcr.io/ublue-os/kinoite-main:latest
 
-COPY my_packages.txt /tmp/packages.txt
+COPY packages.txt /tmp/packages.txt
 
 RUN rpm-ostree install \
     --allow-inactive \
