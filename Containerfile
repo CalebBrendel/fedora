@@ -1,12 +1,11 @@
 # F43 Universal Blue Image
 FROM ghcr.io/ublue-os/kinoite-main:latest
 
-COPY packages.txt /tmp/packages.txt
+COPY my_packages.txt /tmp/my_packages.txt
 
-# 2. Tell rpm-ostree to install everything listed in that file
-# This command strips newlines and passes every name as an argument
-RUN rpm-ostree install $(cat /tmp/packages.txt | xargs) && \
+RUN rpm-ostree install \
+    --allow-inactive \
+    $(grep -vE '^(kernel|systemd|glibc|filesystem|setup|basesystem)' /tmp/my_packages.txt | xargs) && \
     rpm-ostree cleanup -af
 
-# 3. Clean up the temp file to keep the image slim
-RUN rm /tmp/packages.txt
+RUN rm /tmp/my_packages.txt
