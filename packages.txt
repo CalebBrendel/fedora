@@ -1,1 +1,4 @@
-test
+dialog
+distrobox
+mpv
+plocate
