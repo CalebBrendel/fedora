@@ -50,7 +50,7 @@ jobs:
 
       - name: Get current date
         id: date
-        run: echo "date=$(date -u +%Y\-%m\-%d\T%H\:%M\:%S\Z)" >> $GITHUB_OUTPUT
+        run: echo "date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
 
       - name: Image Metadata
         uses: docker/metadata-action@v5
@@ -58,15 +58,13 @@ jobs:
         with:
           images: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            # Use "latest" only on the main branch
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            # Use the branch name as the tag (e.g. steam-deck)
             type=ref,event=branch
-            # Optional: Date based tags
-            type=raw,value={{date 'YYYYMMDD'}},enable=${{ github.ref == 'refs/heads/main' }}
           labels: |
             org.opencontainers.image.title=${{ env.IMAGE_NAME }}
             org.opencontainers.image.vendor=${{ github.repository_owner }}
+            org.opencontainers.image.description=${{ env.IMAGE_DESC }}
+            org.opencontainers.image.created=${{ steps.date.outputs.date }}
             containers.bootc=1
 
       - name: Build Image
@@ -97,3 +95,17 @@ jobs:
           tags: ${{ steps.metadata.outputs.tags }}
           extra-args: |
             --disable-content-trust
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.5.0
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+
+      - name: Sign container image
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          IMAGE_FULL="${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}"
+          for tag in ${{ steps.metadata.outputs.tags }}; do
+            cosign sign -y --key env://COSIGN_PRIVATE_KEY $IMAGE_FULL:$tag
+          done
+        env:
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
