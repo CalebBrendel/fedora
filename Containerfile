@@ -1,4 +1,4 @@
-FROM ghcr.io/ublue-os/bazzite:stable
+FROM ghcr.io/ublue-os/bazzite:unstable
 
 COPY repos/*.repo /etc/yum.repos.d/
 
