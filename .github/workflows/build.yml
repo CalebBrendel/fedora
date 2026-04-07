@@ -36,6 +36,12 @@ jobs:
       id-token: write
 
     steps:
+      - name: Lowercase Registry User
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
+        env:
+          OWNER: "${{ github.repository_owner }}"
+
       - name: Prepare environment
         run: |
           # Lowercase the image uri
