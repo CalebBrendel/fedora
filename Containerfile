@@ -1,5 +1,4 @@
-# F43 Universal Blue Image
-FROM ghcr.io/ublue-os/kinoite-main:latest
+FROM ghcr.io/ublue-os/bazzite:stable
 
 COPY repos/*.repo /etc/yum.repos.d/
 
