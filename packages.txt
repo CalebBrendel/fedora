@@ -2336,11 +2336,6 @@ rocm-opencl
 rocm-runtime
 rocm-runtime-devel
 rocm-smi
-rom-properties
-rom-properties-common
-rom-properties-kf6
-rom-properties-thumbnailer-dbus
-rom-properties-utils
 rootfiles
 rpcbind
 rpm
@@ -2445,7 +2440,6 @@ startup-notification
 steam
 steam-devices
 steam_notif_daemon
-steamos-manager
 stix-fonts
 stoken-libs
 stress-ng
@@ -2637,7 +2631,6 @@ wsdd
 x264-libs
 x265-libs
 xapian-core-libs
-xapp-symbolic-icons
 xapps
 xavs2-libs
 xcb-imdkit
